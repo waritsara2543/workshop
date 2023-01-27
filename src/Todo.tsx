@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface Todo {
   id: number;
@@ -46,9 +46,29 @@ const postTodos = async (todo: Todo) => {
   });
 };
 
+const getTodos = async () => {
+  return new Promise<Todo[]>((resolve) => {
+    setTimeout(() => {
+      const db: any = localStorage.getItem("todos");
+      if (db) {
+        resolve(JSON.parse(db));
+      } else {
+        resolve([]);
+      }
+    }, 3000);
+  });
+};
+
 const Todos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const db: any = await getTodos();
+      setTodos(db);
+    })();
+  }, []);
 
   const createTodo = useCallback(
     async (todo: Todo) => {
