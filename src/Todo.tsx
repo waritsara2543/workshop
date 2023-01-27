@@ -51,9 +51,9 @@ const Todos = () => {
   const [newTodo, setNewTodo] = useState<string | null>(null);
 
   const createTodo = useCallback(
-    (todo: Todo) => {
+    async (todo: Todo) => {
+      await postTodos(todo);
       setTodos((todos) => [...todos, todo]);
-      postTodos(todo);
     },
     [setTodos]
   );
