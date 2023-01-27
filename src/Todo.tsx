@@ -30,15 +30,20 @@ const Todo = (props: {
   );
 };
 
-const postTodos = (todo: Todo) => {
-  let db: any = localStorage.getItem("todos");
-  if (!db) {
-    localStorage.setItem("todos", JSON.stringify([todo]));
-  } else {
-    db = JSON.parse(db);
-    db.push(todo);
-    localStorage.setItem("todos", JSON.stringify(db));
-  }
+const postTodos = async (todo: Todo) => {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      let db: any = localStorage.getItem("todos");
+      if (!db) {
+        localStorage.setItem("todos", JSON.stringify([todo]));
+      } else {
+        db = JSON.parse(db);
+        db.push(todo);
+        localStorage.setItem("todos", JSON.stringify(db));
+      }
+      resolve();
+    }, 3000);
+  });
 };
 
 const Todos = () => {
