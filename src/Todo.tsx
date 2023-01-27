@@ -30,12 +30,26 @@ const Todo = (props: {
   );
 };
 
+const postTodos = (todo: Todo) => {
+  let db: any = localStorage.getItem("todos");
+  if (!db) {
+    localStorage.setItem("todos", JSON.stringify([todo]));
+  } else {
+    db = JSON.parse(db);
+    db.push(todo);
+    localStorage.setItem("todos", JSON.stringify(db));
+  }
+};
+
 const Todos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string | null>(null);
 
   const createTodo = useCallback(
-    (todo: Todo) => setTodos((todos) => [...todos, todo]),
+    (todo: Todo) => {
+      setTodos((todos) => [...todos, todo]);
+      postTodos(todo);
+    },
     [setTodos]
   );
   const updateTodo = useCallback(
